@@ -1,0 +1,70 @@
+{
+  "global": {
+    "colors": {
+      "background": "#fdfbf7",
+      "text": "#1a1a1a",
+      "brand": "#d97706"
+    },
+    "typography": {
+      "fontFamily": "'Inter', system-ui, sans-serif",
+      "baseSize": "16px"
+    },
+    "layout": {
+      "mobileMargin": "5vw",
+      "contentWidth_0": "100%",
+      "contentWidth_1": "1200px",
+      "contentWidth_2": "800px",
+      "contentWidth_3": "600px"
+    },
+    "design": {
+      "radius": {
+        "buttons": "0.5rem",
+        "cards": "1.5rem"
+      },
+      "fonts": {
+        "headings": "'Playfair Display', serif"
+      },
+      "colors": {
+        "headingText": "#92400e",
+        "gradientEnd": "#facc15"
+      },
+      "shadows": {
+        "base": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+        "hover": "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+      }
+    }
+  },
+  "components": {
+    "topbar": {
+      "height": "80px",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "innerContentWidth": "cw-1"
+    },
+    "article": {
+      "fontFamily": "var(--theme-font)",
+      "fontSize": "1.5rem",
+      "lineHeight": "1.8",
+      "imageRadius": "1rem",
+      "colors": {
+        "light": {
+          "text": "#1a1a1a",
+          "headings": "#d97706",
+          "blockquote": "#7d5d43"
+        },
+        "dark": {
+          "text": "#e2e8f0",
+          "headings": "#fbbf24",
+          "blockquote": "#94a3b8"
+        }
+      }
+    },
+    "footer": {
+      "paddingTop": "60px",
+      "paddingBottom": "40px",
+      "backgroundColor": "#cococo",
+      "textColor": "#1a1a1a",
+      "innerContentWidth": "cw-1"
+    }
+  }
+}

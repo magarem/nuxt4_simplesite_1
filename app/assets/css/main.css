@@ -1,0 +1,70 @@
+/* Importação principal do Tailwind v4 */
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* ✨ FUNDAMENTOS: Tipografia e Cores Base */
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-page-bg: #fdfbf7;
+  --color-page-text: #1a1a1a;
+  --color-brand: #d97706;
+}
+
+@layer base {
+  html {
+    font-size: 100%;
+  }
+  
+  /* O Body e o HTML precisam de ocupar pelo menos 100% da altura para o fundo preto ser visível sempre */
+  html, body, #__nuxt {
+    min-height: 100vh;
+  }
+
+  body {
+    background-color: var(--theme-outside-bg, #000000); /* Fundo preto nativo */
+  }
+}
+
+/* =========================================================
+   ✨ SIRIUS UI KIT
+   ========================================================= */
+@utility sirius-title { @apply text-3xl md:text-4xl text-amber-800 tracking-tight leading-tight; }
+@utility sirius-subtitle { @apply text-lg md:text-xl font-medium max-w-[65ch] leading-relaxed opacity-80; }
+@utility sirius-bread { @apply text-sm font-medium opacity-60 hover:opacity-100 hover:text-[var(--color-brand)] transition-all cursor-pointer; }
+@utility sirius-maintext { @apply text-base leading-relaxed max-w-[65ch] opacity-90; }
+@utility sirius-highlight { @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-brand)] to-yellow-500 font-black; }
+@utility sirius-btn-primary { @apply inline-flex items-center justify-center px-6 py-3 bg-[var(--color-brand)] text-white font-bold uppercase tracking-wider rounded-xl shadow-md hover:scale-[1.02] hover:shadow-lg hover:bg-amber-600 transition-all active:scale-95 cursor-pointer; }
+@utility sirius-btn-secondary { @apply inline-flex items-center justify-center px-6 py-3 bg-transparent border-2 border-[var(--color-brand)] text-[var(--color-brand)] font-bold uppercase tracking-wider rounded-xl hover:bg-[var(--color-brand)] hover:text-white transition-all active:scale-95 cursor-pointer; }
+@utility sirius-card { @apply bg-white  border-black/5 rounded-2xl  shadow-sm hover:shadow-xl hover:border-[var(--color-brand)]/30 hover:-translate-y-1 transition-all duration-300; }
+@utility sirius-tag { @apply inline-flex items-center gap-1.5 px-3 py-1 bg-[var(--color-brand)]/10 text-[var(--color-brand)] font-bold text-xs uppercase tracking-widest rounded-full; }
+
+/* =========================================================
+   ✨ LIMITES DE LEITURA (Apontando DIRETAMENTE para a variável --theme injetada)
+   ========================================================= */
+@utility cw-0 {
+  width: 100%;
+  max-width: var(--theme-cw-0, 100%);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+@utility cw-1 {
+  width: 100%;
+  max-width: var(--theme-cw-1, 1124px);
+  margin-inline: auto;
+  padding-inline: var(--theme-padding, 5vw);
+}
+
+@utility cw-2 {
+  width: 100%;
+  max-width: var(--theme-cw-2, 800px);
+  margin-inline: auto;
+  padding-inline: var(--theme-padding, 5vw);
+}
+
+@utility cw-3 {
+  width: 100%;
+  max-width: var(--theme-cw-3, 600px);
+  margin-inline: auto;
+  padding-inline: var(--theme-padding, 5vw);
+}
