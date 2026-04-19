@@ -1,7 +1,6 @@
 <template>
   <!-- Padding vertical reduzido (py-4 md:py-6) para um formato mais compacto (Low Profile) -->
-  <section :class="['flex flex-col relative w-full py-4 md:py-0', alignmentClass, contentWidth]">
-    
+  <section :class="['flex flex-col relative w-full pt-4 pb-0 md:pt-0', alignmentClass, contentWidth]">  
     <!-- ✨ LOW PROFILE TAG (Simples, sem linhas, texto menor) ✨ -->
     <div v-if="tag" class="flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-[var(--theme-brand)] mb-2 opacity-80">
       <i v-if="tagIcon" :class="[tagIcon, 'text-sm']"></i> 
@@ -18,7 +17,7 @@
 
     <!-- ✨ SUBTÍTULO ✨ -->
     <p v-if="subtitle" class="text-sm md:text-base font-normal opacity-60 max-w-[65ch] leading-relaxed">
-     22 {{ subtitle }}
+      {{ subtitle }}
     </p>
 
     <!-- ✨ SLOT EXTRA ✨ -->

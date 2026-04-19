@@ -4,289 +4,174 @@ import { parse } from 'marked';
 import matter from 'gray-matter';
 
 const props = defineProps({
-  /**
-   * Caminho do ficheiro .md (ex: 'revolucao-sirius.md')
-   */
-  path: {
-    type: String,
-    required: true
-  },
-  /**
-   * Largura do contentor (cw-0, cw-1, cw-2, cw-3)
-   */
-  contentWidth: {
-    type: String,
-    default: 'cw-1'
-  },
-  /**
-   * Configurações de Layout e Estilo dinâmico
-   */
+  pagePath: String, // ex: 'about'
+  fileName: String, // ex: 'textbox1.md'
+  contentWidth: { type: String, default: 'cw-1' },
   layout: {
     type: Object,
     default: () => ({
-      title: { 
-        show: true, 
-        fontFamily: 'inherit', 
-        fontSize: 'clamp(2.25rem, 2vw, 3.5rem)', 
-        color: { light: 'var(--theme-heading-text, var(--theme-text))', dark: 'var(--theme-heading-text, var(--theme-text))' } 
-      },
-      maintext: { 
-        fontFamily: 'inherit', 
-        fontSize: '1.125rem', 
-        color: { light: 'var(--theme-text)', dark: 'var(--theme-text)' } 
-      },
-      topimage: { width: '100%', height: 'clamp(250px, 40vh, 450px)' },
-      sideimage: { width: '280px', height: 'auto' }
+      title: { show: true },
+      maintext: { fontSize: '1.125rem' },
+      topimage: { width: '100%', height: '400px' },
+      sideimage: { width: '280px' }
     })
   }
 });
 
-// ✨ FETCH DOS DADOS INTEGRADO ✨
+// 1. Caminho Dinâmico para a API
+const targetPath = computed(() => {
+  if (!props.pagePath || !props.fileName) return null;
+  // Junta a pasta e o arquivo para a API (ex: 'about/textbox1.md')
+  return `${props.pagePath}/${props.fileName}`;
+});
+
+// ✨ 2. FETCH VIA API NITRO ✨
+// O Nuxt vai transformar isso em: /api/content?path=about/textbox1.md
 const { data: apiResponse, pending, error } = await useFetch('/api/content', {
-  query: { path: props.path },
-  key: `content-${props.path}`
+  query: { path: targetPath },
+  key: `api-content-${props.pagePath}-${props.fileName}`,
+  server: false
 });
 
 /**
- * ✨ MOTOR DE DADOS ✨
+ * ✨ MOTOR DE PARSING HÍBRIDO ✨
  */
 const articleData = computed(() => {
-  const serverData = apiResponse.value?.md_data;
-  const serverContent = apiResponse.value?.md_content;
-  const rawContent = apiResponse.value?.raw || '';
+  const base = { title: '', body: '', topImage: '', author: '', date: '', sideImages: [] };
   
-  const base = { metadata: {}, body: '', title: '', topImage: '', sideImages: [], author: '', date: '' };
+  if (!apiResponse.value) return base;
 
-  if (serverData) {
+  // Cénario A: A sua API já dissecou o Markdown e enviou um JSON limpo
+  if (apiResponse.value.md_data || apiResponse.value.metadata) {
+    const meta = apiResponse.value.md_data || apiResponse.value.metadata;
     return {
-      metadata: serverData,
-      body: (serverContent || '').trim(),
-      title: serverData.title || '',
-      topImage: serverData.topimage || serverData.topImage || '',
-      sideImages: serverData.images || serverData.sideImages || [],
-      author: serverData.author || '',
-      date: serverData.date || ''
+      title: meta.title || '',
+      body: apiResponse.value.md_content || apiResponse.value.body || '',
+      topImage: meta.topImage || meta.topimage || '',
+      author: meta.author || '',
+      date: meta.date || '',
+      sideImages: meta.images || meta.sideImages || []
     };
   }
 
-  if (!rawContent) return base;
+  // Cénario B: A API enviou apenas o texto bruto (Raw Text)
+  const rawText = typeof apiResponse.value === 'string' ? apiResponse.value : apiResponse.value.raw || '';
+  if (!rawText) return base;
 
   try {
-    const { data, content } = matter(rawContent);
+    const { data, content } = matter(rawText);
     return {
-      metadata: data || {},
-      body: (content || '').trim(),
       title: data?.title || '',
-      topImage: data?.topimage || data?.topImage || '',
-      sideImages: data?.images || data?.sideImages || [],
+      body: content || '',
+      topImage: data?.topImage || data?.topimage || '',
       author: data?.author || '',
-      date: data?.date || ''
+      date: data?.date || '',
+      sideImages: data?.images || data?.sideImages || []
     };
   } catch (e) {
-    return { ...base, body: rawContent };
+    console.warn("⚠️ Erro ao processar Frontmatter. Usando texto puro.");
+    return { ...base, body: rawText };
   }
 });
 
+// Renderiza o Markdown para HTML
 const renderedHtml = computed(() => {
-  if (!articleData.value.body) return '';
-  return parse(articleData.value.body);
+  return articleData.value.body ? parse(articleData.value.body) : '';
 });
 
-const formattedDate = computed(() => {
-  if (!articleData.value.date) return '';
-  try {
-    return new Date(articleData.value.date).toLocaleDateString('pt-PT', { 
-      year: 'numeric', month: 'long', day: 'numeric' 
-    });
-  } catch (e) { return articleData.value.date; }
-});
-
+// Mantém o prefixo /data/ para imagens locais da mesma pasta
 const resolveImg = (path) => {
   if (!path) return '';
-  if (path.startsWith('http') || path.startsWith('data:')) return path;
-  return path.startsWith('/') ? path : `/images/${path}`;
+  if (path.startsWith('http') || path.startsWith('/')) return path;
+  return `/data/${props.pagePath}/${path}`;
 };
 
+// Formatação de Data
+const formattedDate = computed(() => {
+  if (!articleData.value.date) return '';
+  return new Date(articleData.value.date).toLocaleDateString('pt-PT', { 
+    year: 'numeric', month: 'long', day: 'numeric' 
+  });
+});
+
 /**
- * ✨ ESTILOS DINÂMICOS (LAYOUT PROP) ✨
- * Mapeamos o objeto layout para variáveis CSS que serão usadas no style scoped
+ * ✨ ESTILOS DINÂMICOS
  */
 const dynamicStyles = computed(() => {
-  const l = props.layout;
+  const l = props.layout || {};
   return {
-    '--local-title-font': l.title?.fontFamily || 'inherit',
     '--local-title-size': l.title?.fontSize || 'clamp(2.25rem, 5vw, 3.5rem)',
-    '--local-title-color-light': l.title?.color?.light || 'var(--theme-text)',
-    '--local-title-color-dark': l.title?.color?.dark || 'var(--theme-text)',
-    
-    '--local-body-font': l.maintext?.fontFamily || 'inherit',
     '--local-body-size': l.maintext?.fontSize || '1.125rem',
-    '--local-body-color-light': l.maintext?.color?.light || 'var(--theme-text)',
-    '--local-body-color-dark': l.maintext?.color?.dark || 'var(--theme-text)',
-
-    '--local-topimg-w': l.topimage?.width || '100%',
     '--local-topimg-h': l.topimage?.height || '400px',
-    
     '--local-sideimg-w': l.sideimage?.width || '280px',
-    '--local-sideimg-h': l.sideimage?.height || 'auto',
   };
 });
 </script>
 
 <template>
   <div 
-    :class="['content-component', contentWidth, { 'is-loading': pending }]"
+    :class="['content-component mx-auto', contentWidth]"
     :style="dynamicStyles"
   >
-    <!-- ESTADO: CARREGAMENTO -->
-    <div v-if="pending" class="status-overlay">
-      <i class="pi pi-spin pi-spinner text-4xl"></i>
+    <div v-if="pending" class="py-20 text-center">
+      <i class="pi pi-spin pi-spinner text-4xl text-amber-500"></i>
     </div>
 
-    <!-- ESTADO: ERRO -->
-    <div v-else-if="error" class="error-box">
-      <i class="pi pi-exclamation-circle text-3xl mb-4"></i>
-      <h3 class="text-xl font-bold">Conteúdo Indisponível</h3>
-      <p class="opacity-70">{{ path }}</p>
+    <div v-else-if="error" class="error-box p-10 border-2 border-dashed border-red-500/20 text-red-500 rounded-3xl text-center">
+      <i class="pi pi-exclamation-circle text-3xl mb-2"></i>
+      <p>Falha ao comunicar com a API: /api/content?path={{ targetPath }}</p>
     </div>
 
-    <!-- ESTADO: SUCESSO -->
     <template v-else>
-      <!-- 1. TOPBAR (Título condicional pelo layout.title.show) -->
-      <header v-if="layout.title?.show !== false && (articleData.title || articleData.author)" class="content-topbar">
-        <div class="meta-row">
-          <span v-if="articleData.author" class="author-tag">{{ articleData.author }}</span>
-          <span v-if="articleData.author && articleData.date" class="meta-separator">•</span>
-          <time v-if="articleData.date" class="date-tag">{{ formattedDate }}</time>
+      <header v-if="layout.title?.show !== false && (articleData.title || articleData.author)" class="mb-10">
+        <div class="flex items-center gap-3 text-xs font-bold uppercase tracking-widest mb-4">
+          <span v-if="articleData.author" class="text-amber-500">{{ articleData.author }}</span>
+          <span v-if="articleData.date" class="opacity-40">{{ formattedDate }}</span>
         </div>
-        <h1 v-if="articleData.title" class="main-title">{{ articleData.title }}</h1>
-        <div class="accent-line"></div>
+        <h1 v-if="articleData.title" class="text-[var(--local-title-size)] font-black leading-tight tracking-tighter">
+          {{ articleData.title }}
+        </h1>
+        <div class="w-16 h-1 bg-amber-500 mt-6 rounded-full"></div>
       </header>
 
-      <!-- 2. BANNER PRINCIPAL -->
-      <figure v-if="articleData.topImage" class="main-banner">
-        <img :src="resolveImg(articleData.topImage)" alt="Banner" />
+      <figure v-if="articleData.topImage" class="w-full mb-12 overflow-hidden rounded-[2rem] shadow-2xl border border-white/5">
+        <img :src="resolveImg(articleData.topImage)" class="w-full h-[var(--local-topimg-h)] object-cover" />
       </figure>
 
-      <!-- 3. LAYOUT EDITORIAL -->
-      <main class="editorial-grid">
-        <!-- COLUNA LATERAL -->
-        <aside v-if="articleData.sideImages && articleData.sideImages.length > 0" class="side-column">
-          <div class="sticky-images">
-            <div v-for="(img, idx) in articleData.sideImages" :key="idx" class="side-img-card">
-              <img :src="resolveImg(img)" alt="Side image" />
-            </div>
+      <div class="flex flex-col lg:flex-row gap-12 items-start">
+        <aside v-if="articleData.sideImages?.length" class="w-full lg:w-[var(--local-sideimg-w)] shrink-0 sticky top-24">
+          <div v-for="(img, idx) in articleData.sideImages" :key="idx" class="mb-4 rounded-2xl overflow-hidden border border-white/10">
+            <img :src="resolveImg(img)" class="w-full h-auto" />
           </div>
         </aside>
 
-        <!-- COLUNA PRINCIPAL -->
-        <article class="text-column">
-          <div class="prose article-body" v-html="renderedHtml"></div>
+        <article class="prose prose-invert max-w-none flex-1">
+          <div v-html="renderedHtml" class="md-content"></div>
         </article>
-      </main>
+      </div>
     </template>
   </div>
 </template>
 
 <style scoped>
-@reference "~/assets/css/main.css";
-
-.content-component {
-  --c-brand: var(--theme-brand, #d97706);
-  --gap: 4rem;
-  font-family: var(--local-body-font);
-  color: var(--local-body-color-light);
+.md-content :deep(p) {
+  font-size: var(--local-body-size);
   line-height: 1.8;
-  padding-bottom: 5rem;
-  transition: all 0.5s ease;
-}
-
-/* Suporte Dark Mode para as cores locais */
-:global(.dark) .content-component {
-  color: var(--local-body-color-dark);
-}
-
-/* 1. Topbar */
-.content-topbar { margin-bottom: 2.5rem; text-align: left; }
-.meta-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; }
-.author-tag { color: var(--c-brand); }
-.date-tag { opacity: 0.5; }
-.meta-separator { opacity: 0.2; }
-
-.main-title { 
-  font-family: var(--local-title-font);
-  font-size: var(--local-title-size); 
-  color: var(--local-title-color-light);
-  font-weight: 900; 
-  line-height: 1.1; 
-  letter-spacing: -0.04em; 
-  transition: color 0.5s ease; 
-}
-:global(.dark) .main-title { color: var(--local-title-color-dark); }
-
-.accent-line { width: 60px; height: 4px; background: var(--c-brand); margin-top: 1.5rem; border-radius: 4px; }
-
-/* 2. Banner */
-.main-banner { 
-  width: var(--local-topimg-w); 
-  height: var(--local-topimg-h); 
-  border-radius: 1.5rem; 
-  overflow: hidden; 
-  margin-bottom: 4rem; 
-  margin-inline: auto;
-  box-shadow: var(--theme-shadow-base, 0 20px 25px -5px rgba(0, 0, 0, 0.05)); 
-  border: 1px solid color-mix(in srgb, var(--theme-text) 5%, transparent); 
-}
-.main-banner img { width: 100%; height: 100%; object-fit: cover; }
-
-/* 3. Grid */
-.editorial-grid { display: flex; flex-direction: column; gap: 2.5rem; }
-@media (min-width: 1024px) { .editorial-grid { flex-direction: row; gap: var(--gap); align-items: flex-start; } }
-
-/* Sidebar */
-.side-column { width: 100%; }
-@media (min-width: 1024px) { 
-  .side-column { width: var(--local-sideimg-w); shrink: 0; }
-  .sticky-images { position: sticky; top: 6rem; } 
-}
-
-.side-img-card { 
-  width: 100%;
-  height: var(--local-sideimg-h);
-  border-radius: 1.25rem; 
-  overflow: hidden; 
-  border: 1px solid color-mix(in srgb, var(--theme-text) 8%, transparent); 
   margin-bottom: 1.5rem;
-  transition: transform 0.4s ease; 
-}
-.side-img-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* Typography */
-.text-column { flex: 1; min-width: 0; }
-.article-body { 
-  font-size: var(--local-body-size); 
-  max-width: none; 
+  opacity: 0.9;
 }
 
-:deep(.prose) {
-  --tw-prose-body: var(--local-body-color-light);
-  --tw-prose-headings: var(--local-title-color-light);
-  --tw-prose-links: var(--c-brand);
-  --tw-prose-bold: var(--local-title-color-light);
-  --tw-prose-hr: color-mix(in srgb, var(--theme-text) 10%, transparent);
+.md-content :deep(h2) {
+  margin-top: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-:global(.dark) :deep(.prose) {
-  --tw-prose-body: var(--local-body-color-dark);
-  --tw-prose-headings: var(--local-title-color-dark);
-  --tw-prose-bold: var(--local-title-color-dark);
+.md-content :deep(blockquote) {
+  border-left: 4px solid #f59e0b;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 2rem;
+  font-style: italic;
+  border-radius: 0 1rem 1rem 0;
 }
-
-:deep(h2), :deep(h3) { margin-top: 2.5rem; letter-spacing: -0.02em; font-weight: 800; }
-:deep(p) { margin-bottom: 1.75rem; }
-:deep(blockquote) { border-left: 4px solid var(--c-brand); background: color-mix(in srgb, var(--theme-text) 3%, transparent); padding: 1.5rem 2rem; font-style: italic; font-size: 1.25rem; margin: 3rem 0; border-radius: 0 1.25rem 1.25rem 0; opacity: 0.9; }
-
-/* States */
-.status-overlay { @apply flex justify-center py-20 text-3xl; color: var(--c-brand); }
-.error-box { @apply text-center p-16 border-2 border-dashed rounded-[2rem] text-red-500; border-color: color-mix(in srgb, currentColor 20%, transparent); }
 </style>

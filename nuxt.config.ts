@@ -15,6 +15,14 @@ export default defineNuxtConfig({
       ]
     }
   },
+  components: {
+    dirs: [
+      {
+        path: '~/components',
+        global: true // ✨ A MÁGICA ESTÁ AQUI ✨
+      }
+    ]
+  },
   // Apontamos para o nosso ficheiro CSS principal
   css: ['~/assets/css/main.css'],
   

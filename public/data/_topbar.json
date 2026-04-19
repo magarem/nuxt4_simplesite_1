@@ -1,0 +1,45 @@
+{
+  "id": "main-topbar",
+  "height": "80px",
+  "backgroundColor": "#ffffff",
+  "textColor": "#1a1a1a",
+  "innerContentWidth": "cw-1",
+  "blocks": [
+    {
+      "id": "logo-block",
+      "componentName": "SiteHeaderLogo",
+      "align": "left",
+      "props": {
+        "brandName": "Magaweb",
+        "variation": "signature",
+        "signature": "Tecnologia"
+      }
+    },
+    {
+      "id": "menu-block",
+      "componentName": "SiteHeaderMenu",
+      "align": "center",
+      "props": {
+        "menuFont": {
+          "family": "'Montserrat', sans-serif",
+          "sizeDesktop": "18px",
+          "sizeMobile": "20px",
+          "weight": "100"
+        },
+        "menuItems": [
+          { "label": "Início", "path": "/" },
+          { "label": "About", "path": "/about" },
+          { "label": "Serviços", "path": "/services" },
+          { "label": "Contato", "path": "/contact" }
+        ]
+      }
+    },
+
+    {
+      "id": "extra-block",
+      "componentName": "SiteHeaderExtra",
+      "align": "right",
+      "props": {}
+    }
+  ]
+}

@@ -89,29 +89,7 @@ const props = defineProps({
 
 // 🚀 DADOS DE EXEMPLO (Placeholder Premium)
 // Renderizados automaticamente se não passares a prop 'reviews'
-const fallbackReviews = [
-  {
-    text: "A arquitetura JSON-driven revolucionou completamente a forma como gerimos o nosso site. A equipa da Sirius Studio entregou um produto incrivelmente rápido e flexível. O design é de outro nível.",
-    name: "Catarina Mendes",
-    role: "Diretora de Marketing @ Inovatech",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop",
-    rating: 5
-  },
-  {
-    text: "Desde o momento em que lançámos a nova plataforma, as nossas taxas de conversão aumentaram 40%. A atenção ao detalhe e a performance extrema em Nuxt 4 fizeram toda a diferença no nosso funil.",
-    name: "Ricardo Silva",
-    role: "CEO @ E-Commerce Global",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&auto=format&fit=crop",
-    rating: 5
-  },
-  {
-    text: "O visualizador interativo do portefólio que desenvolveram para nós deixou os nossos clientes deslumbrados. A experiência de utilizador é fluida, polida e reflete perfeitamente a identidade da nossa marca.",
-    name: "Joana Alves",
-    role: "Creative Director @ Studio XYZ",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop",
-    rating: 5
-  }
-];
+
 
 const displayReviews = computed(() => {
   return props.reviews && props.reviews.length > 0 ? props.reviews : fallbackReviews;

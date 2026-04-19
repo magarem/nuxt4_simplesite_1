@@ -59,29 +59,7 @@ const props = defineProps({
 
 // ✨ DADOS DE EXEMPLO (Fallback Padrão)
 // Se chamares apenas <QuickNavigation /> sem props, ele renderiza isto:
-const defaultLinks = [
-  {
-    to: '/about',
-    icon: 'pi-users',
-    title: 'Quem Somos',
-    description: 'Conhece a nossa história, a nossa visão e a fantástica equipa por trás da magia.',
-    ctaText: 'Ler Mais'
-  },
-  {
-    to: '/services',
-    icon: 'pi-briefcase',
-    title: 'Serviços',
-    description: 'Explora o nosso portefólio interativo e descobre as soluções exclusivas que oferecemos.',
-    ctaText: 'Ver Trabalhos'
-  },
-  {
-    to: '/contact',
-    icon: 'pi-envelope',
-    title: 'Contacto',
-    description: 'Tens um projeto inovador em mente? Fala connosco e vamos construir algo incrível.',
-    ctaText: 'Falar Connosco'
-  }
-];
+
 
 // Computada que decide se usa os links fornecidos ou os originais
 const displayLinks = computed(() => {

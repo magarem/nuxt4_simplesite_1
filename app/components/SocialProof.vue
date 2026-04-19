@@ -93,16 +93,7 @@ const props = defineProps({
   }
 });
 
-// 🚀 DADOS DE EXEMPLO (Placeholder)
-const fallbackLogos = [
-  { type: 'text', name: 'Acme Corp' },
-  { type: 'text', name: 'Globex' },
-  { type: 'text', name: 'Soylent' },
-  { type: 'text', name: 'Initech' },
-  { type: 'text', name: 'Umbrella' },
-  { type: 'text', name: 'Massive Dynamic' },
-  { type: 'text', name: 'Cyberdyne' },
-];
+
 
 const displayLogos = computed(() => {
   return props.logos && props.logos.length > 0 ? props.logos : fallbackLogos;

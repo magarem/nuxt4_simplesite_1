@@ -43,7 +43,7 @@
    ========================================================= */
 @utility cw-0 {
   width: 100%;
-  max-width: var(--theme-cw-0, 100%);
+  max-width: var(--theme-cw-0, 1600px);
   margin-inline: auto;
   padding-inline: 0;
 }

@@ -1,0 +1,55 @@
+{
+  "layout": "default",
+  "blocks": [
+    {
+      "id": "header-about",
+      "componentName": "PageHeader",
+      "isHero": false,
+      "props": {
+        "tag": "Catálogo",
+        "title": "Nossos serviços",
+        "subtitle": "Confira nosso catalogo"
+      }
+    },
+    {
+      "id": "services-card-grid",
+      "componentName": "CardGrid",
+      "isHero": false,
+      "props": {
+        "contentWidth": "cw-1",
+        "items": [
+          {
+            "title": "Arquitetura de Marcas",
+            "description": "Desenvolvimento de identidades visuais completas, desde o logótipo até aos brand guidelines, tudo estruturado para escalar.",
+            "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1200&auto=format&fit=crop"
+          },
+          {
+            "title": "Design UI/UX Avançado",
+            "description": "Interfaces focadas na conversão do utilizador, aliadas a experiências fluidas e sistemas de design modulares em Vue 3.",
+            "image": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=1200&auto=format&fit=crop"
+          },
+          {
+            "title": "Fotografia de Produto",
+            "description": "Imagens de alta resolução e direção de arte meticulosa para fazer os teus produtos brilharem no digital e na impressão.",
+            "image": "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=1200&auto=format&fit=crop"
+          },
+          {
+            "title": "Desenvolvimento Nuxt 4",
+            "description": "Arquiteturas Jamstack ultra-rápidas e otimizadas para SEO, com motores CSS geridos a 100% por variáveis JSON.",
+            "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop"
+          },
+          {
+            "title": "Estratégia Digital",
+            "description": "Consultoria dedicada ao crescimento do teu negócio através de análise de dados, funis de conversão e automações.",
+            "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop"
+          },
+          {
+            "title": "Produção 3D & Animação",
+            "description": "Trazemos ideias impossíveis à vida através de modelação tridimensional e animação fluida para WebGL.",
+            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop"
+          }
+        ]
+      }
+    }
+  ]
+}
