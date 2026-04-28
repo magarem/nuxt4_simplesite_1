@@ -1,26 +1,34 @@
 <template>
-  <!-- Padding vertical reduzido (py-4 md:py-6) para um formato mais compacto (Low Profile) -->
-  <section :class="['flex flex-col relative w-full pt-4 pb-0 md:pt-0', alignmentClass, contentWidth]">  
-    <!-- ✨ LOW PROFILE TAG (Simples, sem linhas, texto menor) ✨ -->
-    <div v-if="tag" class="flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-[var(--theme-brand)] mb-2 opacity-80">
+  <section v-if="title" :class="['flex flex-col relative pt-4 pb-0 md:pt-0 transition-colors duration-500', alignmentClass, contentWidth]">  
+    
+    <div 
+      v-if="tag" 
+      class="flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-2 opacity-80 transition-colors duration-500 text-primary"
+    >
       <i v-if="tagIcon" :class="[tagIcon, 'text-sm']"></i> 
       {{ tag }}
     </div>
 
-    <!-- ✨ TÍTULO PRINCIPAL ✨ -->
-    <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-snug text-[var(--theme-heading-text,var(--theme-text))] mb-2">
+    <h2 
+      class="text-3xl md:text-3xl lg:text-4xl font-serif font-bold tracking-tight leading-snug mb-3 transition-colors duration-500 text-text-main"
+    >
       {{ title }} 
-      <span v-if="highlight" class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--theme-brand)] to-amber-500">
+      
+      <span 
+        v-if="highlight" 
+        class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"
+      >
         {{ highlight }}
       </span>
-    </h1>
+    </h2>
 
-    <!-- ✨ SUBTÍTULO ✨ -->
-    <p v-if="subtitle" class="text-sm md:text-base font-normal opacity-60 max-w-[65ch] leading-relaxed">
+    <p 
+      v-if="subtitle" 
+      class="text-sm md:text-base font-sans font-normal opacity-70 max-w-[65ch] leading-relaxed transition-colors duration-500 text-text-muted"
+    >
       {{ subtitle }}
     </p>
 
-    <!-- ✨ SLOT EXTRA ✨ -->
     <div v-if="$slots.default" class="mt-4 md:mt-5 w-full flex" :class="slotAlignmentClass">
       <slot />
     </div>
@@ -54,16 +62,11 @@ const props = defineProps({
   },
   contentWidth: { 
     type: String, 
-    default: 'cw-1' 
+    default: 'content' 
   },
-  /**
-   * ✨ PROP DE ALINHAMENTO ✨
-   * Define se o texto e os elementos estão à esquerda, centro ou direita.
-   * Valores: 'left', 'center', 'right'
-   */
   BoxAlign: { 
     type: String, 
-    default: 'left' 
+    default: 'center' 
   }
 });
 

@@ -30,6 +30,7 @@
           { "label": "Início", "path": "/" },
           { "label": "About", "path": "/about" },
           { "label": "Serviços", "path": "/services" },
+          { "label": "Blog", "path": "/blog" },
           { "label": "Contato", "path": "/contact" }
         ]
       }

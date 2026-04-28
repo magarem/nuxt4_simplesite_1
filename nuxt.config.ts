@@ -2,9 +2,17 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  // ✨ 1. O COFRE-FORTE DE CACHE (SWR -> ISR) ✨
+
+  // ✨ 2. MOTOR OTIMIZADO PARA O BUN ✨
+  nitro: {
+    preset: 'bun'
+  },
+
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  // ✨ A MAGIA DOS ÍCONES: Injetamos o CSS do PrimeIcons diretamente no cabeçalho (head) do site
+  
+  // A MAGIA DOS ÍCONES
   app: {
     head: {
       link: [
@@ -15,18 +23,18 @@ export default defineNuxtConfig({
       ]
     }
   },
+  
   components: {
     dirs: [
       {
         path: '~/components',
-        global: true // ✨ A MÁGICA ESTÁ AQUI ✨
+        global: true 
       }
     ]
   },
-  // Apontamos para o nosso ficheiro CSS principal
+  
   css: ['~/assets/css/main.css'],
   
-  // No Tailwind v4, a integração é feita através de um plugin do Vite!
   vite: {
     plugins: [
       tailwindcss(),

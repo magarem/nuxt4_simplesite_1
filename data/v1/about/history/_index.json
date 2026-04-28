@@ -1,0 +1,26 @@
+{
+  "layout": "default",
+  "title": "História da Sirius Studio",
+  "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop",
+  "blocks": [
+    {
+      "id": "header-about",
+      "componentName": "PageHeader",
+      "isHero": false,
+      "props": {
+        "tag": "Historia",
+        "title": "Como tudo começou",
+        "subtitle": "Conhece a nossa jornada digital."
+      }
+    },
+    {
+      "id": "main-content",
+      "componentName": "ContentMD",
+      "isHero": false,
+      "props": {
+        "fileName": "history.md",
+        "contentWidth": "cw-1"
+      }
+    }
+  ]
+}

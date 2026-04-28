@@ -1,0 +1,10 @@
+---
+layout: default
+title: Nossos serviços
+blocks:
+- id: ChildGrid
+  componentName: ChildGrid
+  isHero: false
+  props:
+    parentPath: services
+    contentWidth: cw-1

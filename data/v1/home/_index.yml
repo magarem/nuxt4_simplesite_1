@@ -1,0 +1,83 @@
+blocks:
+  - componentName: HeroSlideShow
+    isHero: true
+    props:
+      config:
+        tag: Solucionando desafios
+        tagIcon: pi-sparkles
+        titlePrefix: O Futuro
+        titleHighlight: começa agora
+        subtitle: O poder da tecnologia a seu serviço
+        contentWidth: cw-1
+        slides:
+          - /homevideo.mp4
+        slideDuration: 5000
+
+  - componentName: SocialProof
+    isHero: true
+    props:
+      title: Empresas de topo escolhem a Sirius
+      logos:
+        - type: text
+          name: Magaweb
+        - type: text
+          name: Globex
+        - type: text
+          name: Soylent
+        - type: text
+          name: Initech
+        - type: text
+          name: Umbrella
+        - type: text
+          name: Massive Dynamic
+        - type: text
+          name: Cyberdyne
+
+  - componentName: QuickNavigation
+    isHero: false
+    props:
+      links:
+        - to: /about
+          icon: pi-users
+          title: Quem Somos
+          description: Conhece a nossa história...
+          ctaText: Ler Mais
+        - to: /services
+          icon: pi-briefcase
+          title: Serviços
+          description: Explora o nosso portefólio...
+          ctaText: Ver Trabalhos
+        - to: /contact
+          icon: pi-envelope
+          title: Contacto
+          description: Tens um projeto inovador...
+          ctaText: Falar Connosco
+
+  - componentName: Testimonials
+    isHero: false
+    props:
+      reviews:
+        - text: A arquitetura JSON-driven revolucionou completamente a forma como gerimos o nosso site. A equipa da Sirius Studio entregou um produto incrivelmente rápido e flexível. O design é de outro nível.
+          name: Catarina Mendes
+          role: Diretora de Marketing @ Inovatech
+          avatar: https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop
+          rating: 5
+        - text: Desde o momento em que lançámos a nova plataforma, as nossas taxas de conversão aumentaram 40%. A atenção ao detalhe e a performance extrema em Nuxt 4 fizeram toda a diferença no nosso funil.
+          name: Ricardo Silva
+          role: CEO @ E-Commerce Global
+          avatar: https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&auto=format&fit=crop
+          rating: 5
+        - text: O visualizador interativo do portefólio que desenvolveram para nós deixou os nossos clientes deslumbrados. A experiência de utilizador é fluida, polida e reflete perfeitamente a identidade da nossa marca.
+          name: Joana Alves
+          role: Creative Director @ Studio XYZ
+          avatar: https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop
+          rating: 5
+
+  - componentName: CallToAction
+    isHero: false
+    props:
+      config:
+        title: Pronto para dar vida à tua ideia?
+        subtitle: Junta-te às marcas inovadoras...
+        buttonText: Iniciar Projeto
+        buttonLink: /contact

@@ -1,70 +1,89 @@
-/* Importação principal do Tailwind v4 */
+/* assets/css/main.css */
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
-/* ✨ FUNDAMENTOS: Tipografia e Cores Base */
 @theme {
+  /* 🏗️ 1. DEFINIÇÃO DA VARIANTE */
+  /* Isso cria o link entre a classe .dark no HTML e o motor do Tailwind */
+  --variant-dark: .dark &;
+
+  /* 🎨 2. CORES BASE (MODO CLARO) */
+  --color-primary: #1D4ED8;
+  --color-secondary: #0F172A;
+  --color-accent: #F59E0B;
+  
+  --color-bg-base: #FFFFFF;
+  --color-bg-muted: #F8FAFC;
+  
+  --color-text-main: #1E293B;
+  --color-text-muted: #64748B;
+  --color-border: #E2E8F0;
+
+  /* 📝 3. TIPOGRAFIA */
   --font-sans: 'Inter', system-ui, sans-serif;
-  --color-page-bg: #fdfbf7;
-  --color-page-text: #1a1a1a;
-  --color-brand: #d97706;
+  --font-serif: 'Merriweather', serif;
+
+  /* 📐 4. FORMAS */
+  --radius-botao: 12px;
+  --radius-cartao: 24px;
+
+  /* 📏 5. LARGURAS MÁXIMAS */
+  --max-width-site: 1440px;     
+  --max-width-content: 1200px;  
+  --max-width-copy: 800px;
 }
 
-@layer base {
-  html {
-    font-size: 100%;
-  }
+/* 🌙 6. SOBREPOSIÇÃO DO MODO ESCURO */
+/* No Tailwind v4, aplicamos a variante fora do @theme para trocar os valores */
+/* Quando o JS injeta .dark no html, estas variáveis ganham prioridade */
+.dark {
+  --color-bg-base: #0f172a;
+  --color-bg-muted: #1e293b;
+  --color-text-main: #f8fafc;
+  --color-text-muted: #94a3b8;
+  --color-border: #334155;
   
-  /* O Body e o HTML precisam de ocupar pelo menos 100% da altura para o fundo preto ser visível sempre */
-  html, body, #__nuxt {
-    min-height: 100vh;
+  /* Se o seu primário for muito escuro, pode clarear um pouco aqui também */
+  --color-primary: #3b82f6; 
+}
+
+/* 📜 7. CAMADA BASE */
+@layer base {
+  *, ::after, ::before {
+    @apply border-border;
   }
 
   body {
-    background-color: var(--theme-outside-bg, #000000); /* Fundo preto nativo */
+    @apply bg-bg-base text-text-main font-sans antialiased transition-colors duration-500;
   }
-}
 
-/* =========================================================
-   ✨ SIRIUS UI KIT
-   ========================================================= */
-@utility sirius-title { @apply text-3xl md:text-4xl text-amber-800 tracking-tight leading-tight; }
-@utility sirius-subtitle { @apply text-lg md:text-xl font-medium max-w-[65ch] leading-relaxed opacity-80; }
-@utility sirius-bread { @apply text-sm font-medium opacity-60 hover:opacity-100 hover:text-[var(--color-brand)] transition-all cursor-pointer; }
-@utility sirius-maintext { @apply text-base leading-relaxed max-w-[65ch] opacity-90; }
-@utility sirius-highlight { @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-brand)] to-yellow-500 font-black; }
-@utility sirius-btn-primary { @apply inline-flex items-center justify-center px-6 py-3 bg-[var(--color-brand)] text-white font-bold uppercase tracking-wider rounded-xl shadow-md hover:scale-[1.02] hover:shadow-lg hover:bg-amber-600 transition-all active:scale-95 cursor-pointer; }
-@utility sirius-btn-secondary { @apply inline-flex items-center justify-center px-6 py-3 bg-transparent border-2 border-[var(--color-brand)] text-[var(--color-brand)] font-bold uppercase tracking-wider rounded-xl hover:bg-[var(--color-brand)] hover:text-white transition-all active:scale-95 cursor-pointer; }
-@utility sirius-card { @apply bg-white  border-black/5 rounded-2xl  shadow-sm hover:shadow-xl hover:border-[var(--color-brand)]/30 hover:-translate-y-1 transition-all duration-300; }
-@utility sirius-tag { @apply inline-flex items-center gap-1.5 px-3 py-1 bg-[var(--color-brand)]/10 text-[var(--color-brand)] font-bold text-xs uppercase tracking-widest rounded-full; }
+  h1, h2, h3, h4 {
+    @apply font-serif font-bold text-text-main;
+  }
 
-/* =========================================================
-   ✨ LIMITES DE LEITURA (Apontando DIRETAMENTE para a variável --theme injetada)
-   ========================================================= */
-@utility cw-0 {
-  width: 100%;
-  max-width: var(--theme-cw-0, 1600px);
-  margin-inline: auto;
-  padding-inline: 0;
-}
 
-@utility cw-1 {
-  width: 100%;
-  max-width: var(--theme-cw-1, 1124px);
-  margin-inline: auto;
-  padding-inline: var(--theme-padding, 5vw);
-}
+  /* 📖 Refinamento de Leitura */
+  .md-content p {
+    @apply text-lg md:text-xl leading-relaxed mb-8 text-text-main opacity-90;
+  }
 
-@utility cw-2 {
-  width: 100%;
-  max-width: var(--theme-cw-2, 800px);
-  margin-inline: auto;
-  padding-inline: var(--theme-padding, 5vw);
-}
+  .md-content h2 {
+    @apply text-3xl md:text-4xl font-serif font-black mt-16 mb-6 leading-tight;
+  }
 
-@utility cw-3 {
-  width: 100%;
-  max-width: var(--theme-cw-3, 600px);
-  margin-inline: auto;
-  padding-inline: var(--theme-padding, 5vw);
+  .md-content h3 {
+    @apply text-2xl md:text-3xl font-serif font-bold mt-12 mb-4 leading-tight;
+  }
+
+  .md-content ul, .md-content ol {
+    @apply mb-8 ml-6 flex flex-col gap-3;
+  }
+
+  .md-content li {
+    @apply text-lg md:text-xl leading-relaxed;
+  }
+
+  /* Bloco de Citação (Blockquote) */
+  .md-content blockquote {
+    @apply border-l-4 border-primary pl-6 py-2 my-10 italic text-2xl opacity-80;
+  }
 }

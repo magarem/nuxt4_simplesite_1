@@ -31,28 +31,31 @@
 
     <div class="absolute inset-0 bg-black/50 z-10 transition-opacity duration-1000"></div>
 
-    <div class="relative z-20 text-center text-white flex flex-col items-center gap-6 px-4 mt-10" :class="heroData.contentWidth">
+    <AppContainer 
+      class="relative z-20 text-center text-white flex flex-col items-center gap-6 px-4 mt-10" 
+      :size="heroData.contentWidth"
+    >
       
-      <span v-if="heroData.tag" class="sirius-tag !bg-white/20 !text-white border border-white/30 backdrop-blur-sm">
+      <span v-if="heroData.tag" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white/20 text-white border border-white/30 backdrop-blur-sm">
         <i v-if="heroData.tagIcon" :class="['pi', heroData.tagIcon]"></i> {{ heroData.tag }}
       </span>
 
-      <h1 class="text-5xl md:text-7xl font-black tracking-tighter drop-shadow-lg">
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter drop-shadow-lg leading-tight">
         {{ heroData.titlePrefix }}
-        <span v-if="heroData.titleHighlight" class="text-[var(--theme-brand)] drop-shadow-md">
+        <span v-if="heroData.titleHighlight" class="text-primary drop-shadow-md">
           {{ heroData.titleHighlight }}
         </span>
       </h1>
 
-      <p v-if="heroData.subtitle" class="text-lg md:text-xl font-medium max-w-[60ch] opacity-90 drop-shadow-md leading-relaxed">
+      <p v-if="heroData.subtitle" class="text-lg md:text-xl lg:text-2xl font-medium max-w-[60ch] opacity-90 drop-shadow-md leading-relaxed">
         {{ heroData.subtitle }}
       </p>
 
-      <div v-if="$slots.default" class="mt-4 flex gap-4">
+      <div v-if="$slots.default" class="mt-6 flex flex-wrap justify-center gap-4">
         <slot />
       </div>
 
-    </div>
+    </AppContainer>
   </section>
 </template>
 
@@ -74,17 +77,17 @@ const heroData = computed(() => ({
   titlePrefix: 'O Futuro do',
   titleHighlight: 'Web Design',
   subtitle: 'Faz scroll para baixo e descobre o nosso universo através das páginas principais.',
-  contentWidth: 'cw-1',
+  contentWidth: 'content', // 🧹 FAXINA: O antigo 'cw-1' deu lugar a 'content' ou 'site'
   slides: [
     "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000&auto=format&fit=crop",
     "/fundo.mp4", 
     "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2000&auto=format&fit=crop"
   ],
   slideDuration: 5000,
-  ...props.config // Sobrescreve com os dados da página
+  ...props.config // Sobrescreve com os dados do CMS
 }));
 
-// 3. O Normalizador agora olha para o 'heroData'
+// 3. Normalizador (Imagens vs Vídeos)
 const normalizedSlides = computed(() => {
   return heroData.value.slides.map(slide => {
     if (typeof slide === 'object' && slide !== null && slide.url) {
@@ -100,6 +103,7 @@ const normalizedSlides = computed(() => {
   });
 });
 
+// 4. Lógica do Loop
 const currentSlide = ref(0);
 let slideInterval = null;
 
@@ -119,6 +123,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Transição perfeita e controlada exclusivamente pelo Vue */
 .hero-fade-enter-active,
 .hero-fade-leave-active {
   transition: opacity 1.5s ease-in-out;

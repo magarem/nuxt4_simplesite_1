@@ -1,11 +1,11 @@
 ---
-title: A Revolução Sirius Studio
+title: Nossa história
 author: Equipa Criativa Sirius
-topimage: https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1200&h=300&auto=format&fit=crop
+topimage: slide1.jpeg
 date: 2026-01-15
 ---
 
-Redefinindo o Desenvolvimento Web
+Como chegamos até aqui.
 
 Na Sirius Studio, acreditamos que a tecnologia não deve ser um obstáculo à criatividade, mas sim o seu catalisador mais potente. O nosso percurso começou com uma pergunta simples: Como podemos construir sites que sejam incrivelmente rápidos para o utilizador e, ao mesmo tempo, ridiculamente fáceis de gerir para o criador?
 

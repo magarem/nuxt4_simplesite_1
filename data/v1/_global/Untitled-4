@@ -1,0 +1,376 @@
+{
+  "project": {
+    "name": "Magaweb Tecnologia",
+    "type": "Site Institucional com CMS File-based",
+    "framework": "Nuxt 3 + Nuxt UI v4",
+    "description": "Sistema modular de site com dados em arquivos YAML/Markdown, versionamento de conteúdo e API server-side para atualização em tempo real sem rebuild"
+  },
+  "structure": {
+    "root": {
+      "app.vue": "Layout principal com AppHeader e AppFooter",
+      "app.config.ts": "Configuração do tema Nuxt UI (cores primárias, container)",
+      "nuxt.config.ts": "Configuração Nuxt com módulo @nuxt/ui",
+      "package.json": "Dependências: nuxt, @nuxt/ui, vue, yaml"
+    },
+    "data": {
+      "_settings.yml": {
+        "description": "Configuração central de versionamento do site",
+        "properties": {
+          "currentVersion": ["v2", "v1"],
+          "config": {
+            "preview": true,
+            "previewParam": "version",
+            "cacheTTL": 300,
+            "debug": false,
+            "metadata": {
+              "v1": {"label": "Versão Original", "date": "2024-01-01", "status": "stable"},
+              "v2": {"label": "Nova Home Page", "date": "2024-06-15", "status": "current"},
+              "v3": {"label": "Preview - Redesign", "date": "2024-12-01", "status": "draft"}
+            }
+          },
+          "fallback": "v1"
+        }
+      },
+      "_global": {
+        "_topbar.yml": {
+          "description": "Dados globais da barra de navegação",
+          "properties": {
+            "logo": {"texto": "Magaweb", "subtitulo": "Tecnologia", "icone": "ph:code", "link": "/"},
+            "nav": [
+              {"label": "Home", "to": "/", "icone": "ph:house"},
+              {"label": "Quem Somos", "to": "/quem-somos", "icone": "ph:users"},
+              {"label": "Serviços", "to": "/servicos", "icone": "ph:briefcase"},
+              {"label": "Contato", "to": "/contato", "icone": "ph:envelope"}
+            ],
+            "extralinks": {
+              "cta_principal": {"texto": "Orçamento", "link": "/contato", "icone": "ph:paper-plane-tilt", "visibilidade": "desktop"},
+              "redes_sociais": [
+                {"nome": "Instagram", "icone": "ph:instagram-logo", "link": "#"},
+                {"nome": "LinkedIn", "icone": "ph:linkedin-logo", "link": "#"},
+                {"nome": "GitHub", "icone": "ph:github-logo", "link": "#"}
+              ],
+              "tema": {"mostrar": true}
+            }
+          }
+        },
+        "_footer.yml": {
+          "description": "Dados globais do rodapé",
+          "properties": {
+            "esquerda": {"texto": "© {ano} Magaweb Tecnologia", "links": []},
+            "centro": {"titulo": "Links Rápidos", "links": []},
+            "direita": {"titulo": "Contato", "email": "contato@magaweb.com.br", "telefone": "(11) 99999-0000"},
+            "base": {"texto": "Desenvolvido com ❤️ pela Magaweb Tecnologia"}
+          }
+        }
+      },
+      "geral.yml": {
+        "description": "Dados gerais da empresa",
+        "properties": {
+          "empresa": {
+            "nome": "Magaweb Tecnologia",
+            "slogan": "Transformando ideias em soluções digitais",
+            "telefone": "(11) 99999-0000",
+            "email": "contato@magaweb.com.br",
+            "endereco": "Av. Paulista, 1000 - São Paulo/SP",
+            "ano_fundacao": 2015
+          }
+        }
+      },
+      "v1": {
+        "description": "Versão 1 - Base completa do site",
+        "pages": {
+          "home": {
+            "_index.yml": {
+              "header": {"title": "", "desc": "", "image": ""},
+              "blocks": [
+                {"component": "HeroSection", "props": {}},
+                {"component": "DiferenciaisSection", "props": {}},
+                {"component": "CTASection", "props": {}}
+              ]
+            }
+          },
+          "quemsomos": {
+            "_index.yml": {
+              "header": {"title": "", "desc": "", "image": ""},
+              "blocks": [
+                {"component": "PageHero", "props": {}},
+                {"component": "ContentMD", "props": {"file": "text1.md"}},
+                {"component": "ValoresGrid", "props": {}},
+                {"component": "EquipeCards", "props": {}}
+              ]
+            },
+            "text1.md": "Conteúdo markdown da história"
+          },
+          "servicos": {
+            "_index.yml": {
+              "header": {"title": "", "desc": "", "image": ""},
+              "blocks": [
+                {"component": "PageHero", "props": {}},
+                {"component": "SubPagesGrid", "props": {"pasta": "servicos", "colunas": 3, "live": true}},
+                {"component": "CTASection", "props": {}}
+              ]
+            },
+            "_order.yml": {
+              "ordem": ["consultoria", "sistemas", "seguranca"],
+              "config": {"excluir": [], "destacar": [], "fallback": "alfabetica"}
+            },
+            "consultoria": {
+              "_index.yml": {"header": {}, "blocks": []},
+              "text1.md": "Descrição detalhada da consultoria"
+            },
+            "sistemas": {
+              "_index.yml": {"header": {}, "blocks": []},
+              "text1.md": "Descrição detalhada de sistemas"
+            },
+            "seguranca": {
+              "_index.yml": {"header": {}, "blocks": []},
+              "text1.md": "Descrição detalhada de segurança"
+            }
+          },
+          "contato": {
+            "_index.yml": {
+              "header": {"title": "", "desc": "", "image": ""},
+              "blocks": [
+                {"component": "PageHero", "props": {}},
+                {"component": "ContatoForm", "props": {}}
+              ]
+            }
+          }
+        }
+      },
+      "v2": {
+        "description": "Versão 2 - Apenas páginas alteradas (herda o resto de v1)",
+        "pages": {
+          "home": {
+            "_index.yml": "Nova versão da home com conteúdo atualizado"
+          },
+          "servicos": {
+            "_order.yml": "Nova ordem dos serviços"
+          }
+        }
+      }
+    },
+    "pages": {
+      "index.vue": "Home - Carrega dados via useVersionedData('home')",
+      "quem-somos.vue": "Quem Somos - Carrega dados via useVersionedData('quemsomos')",
+      "servicos.vue": "Serviços - Carrega dados via useVersionedData('servicos')",
+      "servicos": {
+        "consultoria.vue": "Subpágina - Carrega dados via useVersionedData('servicos/consultoria')",
+        "sistemas.vue": "Subpágina - Carrega dados via useVersionedData('servicos/sistemas')",
+        "seguranca.vue": "Subpágina - Carrega dados via useVersionedData('servicos/seguranca')"
+      },
+      "contato.vue": "Contato - Carrega dados via useVersionedData('contato')",
+      "admin": {
+        "ordem": {
+          "[pasta].vue": "Interface admin para gerenciar ordem via drag-and-drop"
+        }
+      }
+    },
+    "components": {
+      "AppHeader.vue": "Header com navegação responsiva e menu mobile",
+      "AppFooter.vue": "Footer com links, contato e redes sociais",
+      "blocks": {
+        "HeroSection.vue": "Hero com título, subtítulo, CTAs e imagem",
+        "PageHero.vue": "Hero simples com ícone e fundo opcional",
+        "DiferenciaisSection.vue": "Grid de cards com ícones",
+        "CTASection.vue": "Chamada para ação com fundo colorido",
+        "ContentMD.vue": "Renderiza conteúdo markdown de arquivo",
+        "ContentComSidebar.vue": "Conteúdo com sidebar de tópicos",
+        "SubPagesGridServer.vue": "Grid dinâmico de subpáginas com versionamento",
+        "ValoresGrid.vue": "Grid de valores/pilares",
+        "EquipeCards.vue": "Cards de membros da equipe",
+        "ProcessoSteps.vue": "Linha do tempo de processo/metodologia",
+        "CasesCards.vue": "Cards de cases de sucesso",
+        "TechTags.vue": "Tags de tecnologias por categoria",
+        "IconCardsGrid.vue": "Grid de cards com ícones",
+        "CertificacoesList.vue": "Lista de certificações",
+        "NumerosMetricas.vue": "Métricas/números destacados",
+        "ContatoForm.vue": "Formulário de contato completo"
+      }
+    },
+    "server": {
+      "api": {
+        "data": {
+          "[...path].ts": "API principal - lê YAML/MD com versionamento e cache"
+        },
+        "subpages": {
+          "[pasta].ts": "API de subpáginas com ordenação via _order.yml"
+        },
+        "order": {
+          "[pasta].ts": "API CRUD para gerenciar _order.yml"
+        },
+        "versions": {
+          "index.ts": "API para listar e atualizar versões",
+          "[version]": {
+            "files.ts": "API para listar arquivos de uma versão específica"
+          }
+        },
+        "cache": {
+          "clear.ts": "API para limpar cache (com autenticação)"
+        }
+      },
+      "utils": {
+        "dataReader.ts": "Utilitário para ler YAML, MD, escanear subpáginas e resolver file()",
+        "cacheManager.ts": "Gerenciador de cache em memória com TTL configurável",
+        "versionManager.ts": "Gerenciador de versionamento - resolve arquivos entre versões"
+      }
+    },
+    "composables": {
+      "useLiveData.ts": "Composable para consumir API de dados em tempo real",
+      "useVersionedData.ts": "Composable para dados com suporte a versionamento e preview",
+      "useGlobalData.ts": "Composable para acessar dados globais (_topbar, _footer, geral)",
+      "useDataResolver.ts": "Resolver de referências file() em objetos YAML"
+    }
+  },
+  "features": {
+    "cms_file_based": {
+      "description": "CMS baseado em arquivos YAML e Markdown",
+      "benefits": [
+        "Sem banco de dados necessário",
+        "Versionamento com Git",
+        "Fácil edição em qualquer editor de texto",
+        "Conteúdo versionado por pastas"
+      ]
+    },
+    "versionamento": {
+      "description": "Sistema de versionamento de conteúdo",
+      "how_it_works": [
+        "data/v1/ = Versão base com todas as páginas",
+        "data/v2/ = Apenas páginas alteradas (herda resto de v1)",
+        "data/v3/ = Preview de nova versão",
+        "_settings.yml define ordem de prioridade: [v2, v1]",
+        "Preview via query string: ?version=v3"
+      ],
+      "resolution": [
+        "1. Busca na versão mais recente (v2)",
+        "2. Se não encontrar, busca na próxima (v1)",
+        "3. Se não encontrar em nenhuma, usa fallback"
+      ]
+    },
+    "blocos_dinamicos": {
+      "description": "Páginas montadas por blocos configuráveis",
+      "how_it_works": [
+        "Cada _index.yml define blocos na propriedade 'blocks'",
+        "Cada bloco tem: component (nome do componente) e props (dados)",
+        "Componentes são registrados e renderizados dinamicamente",
+        "Nova seção = novo bloco no YAML"
+      ]
+    },
+    "atualizacao_tempo_real": {
+      "description": "Conteúdo atualizado sem rebuild",
+      "how_it_works": [
+        "APIs server-side leem arquivos diretamente do sistema de arquivos",
+        "Cache em memória com TTL configurável (_settings.yml)",
+        "Composable useVersionedData busca dados via API",
+        "Editar arquivo YAML = site atualizado automaticamente"
+      ]
+    },
+    "subpages_grid": {
+      "description": "Grid automático de subpáginas",
+      "how_it_works": [
+        "Componente SubPagesGrid escaneia subpastas automaticamente",
+        "Lê title, desc, image do cabeçalho de cada _index.yml",
+        "Ordenação controlada por _order.yml (ordem manual, destaque, exclusão)",
+        "Suporte a atualização ao vivo (live: true)"
+      ]
+    },
+    "referencias_arquivo": {
+      "description": "Textos longos em arquivos Markdown separados",
+      "how_it_works": [
+        "YAML: conteudo: file(text1.md)",
+        "Sistema resolve automaticamente na mesma versão",
+        "Markdown renderizado como HTML na página"
+      ]
+    },
+    "seo": {
+      "description": "SEO dinâmico baseado nos dados",
+      "how_it_works": [
+        "Cada _index.yml tem title, desc, image no cabeçalho",
+        "useHead atualiza meta tags dinamicamente",
+        "Imagens para compartilhamento social (og:image)"
+      ]
+    }
+  },
+  "data_flow": {
+    "page_load": [
+      "1. Página Vue carrega",
+      "2. useVersionedData('home') chama API /api/data/home",
+      "3. versionManager.resolveFilePath('home/_index.yml')",
+      "4. Busca em /data/v2/home/_index.yml → se não existir, /data/v1/home/_index.yml",
+      "5. Lê YAML e resolve referências file()",
+      "6. CacheManager armazena resultado",
+      "7. Retorna dados com metadados de versão",
+      "8. Página renderiza blocos dinamicamente"
+    ],
+    "live_update": [
+      "1. Editor altera /data/v2/home/_index.yml",
+      "2. Cache expira (ou é limpo manualmente)",
+      "3. Próxima requisição lê arquivo atualizado",
+      "4. Site reflete mudanças sem rebuild"
+    ],
+    "version_preview": [
+      "1. Usuário acessa /?version=v3",
+      "2. useVersionedData detecta query param",
+      "3. API prioriza /data/v3/ na busca",
+      "4. Preview da nova versão é exibida"
+    ]
+  },
+  "components_map": {
+    "HeroSection": ["home"],
+    "PageHero": ["quemsomos", "servicos", "contato", "subpáginas de serviços"],
+    "DiferenciaisSection": ["home"],
+    "CTASection": ["home", "servicos", "subpáginas de serviços"],
+    "ContentMD": ["quemsomos", "subpáginas de serviços"],
+    "ContentComSidebar": ["consultoria", "seguranca"],
+    "SubPagesGridServer": ["servicos (página principal)"],
+    "ValoresGrid": ["quemsomos"],
+    "EquipeCards": ["quemsomos"],
+    "ProcessoSteps": ["consultoria", "sistemas"],
+    "CasesCards": ["consultoria"],
+    "TechTags": ["sistemas"],
+    "IconCardsGrid": ["sistemas"],
+    "CertificacoesList": ["seguranca"],
+    "NumerosMetricas": ["seguranca"],
+    "ContatoForm": ["contato"]
+  },
+  "apis": {
+    "GET /api/data/{path}": {
+      "description": "Lê qualquer arquivo YAML/MD com versionamento",
+      "params": {"version": "Versão específica para preview", "bypass": "Ignora cache"},
+      "response": "Dados do arquivo + metadados de versão"
+    },
+    "GET /api/subpages/{pasta}": {
+      "description": "Lista subpáginas com ordenação via _order.yml",
+      "params": {"ordenar": "ordem|title|slug", "limite": "Número máximo", "destacados": "true|false"},
+      "response": "Array de subpáginas com metadados"
+    },
+    "GET/POST /api/order/{pasta}": {
+      "description": "Ler ou atualizar _order.yml",
+      "body": {"ordem": ["slug1", "slug2"], "config": {}},
+      "response": "Configuração de ordem"
+    },
+    "GET /api/versions": {
+      "description": "Lista todas as versões disponíveis",
+      "response": "Versões com status (ativa/draft) e metadados"
+    },
+    "POST /api/versions": {
+      "description": "Atualiza configurações de versão",
+      "body": {"currentVersion": ["v2", "v1"], "config": {}},
+      "response": "Configurações atualizadas"
+    },
+    "POST /api/cache/clear": {
+      "description": "Limpa cache (requer token)",
+      "headers": {"x-cache-token": "token"},
+      "response": "Status da limpeza"
+    }
+  },
+  "key_files": {
+    "data/_settings.yml": "Controla versões ativas e configurações globais",
+    "data/_global/_topbar.yml": "Navegação e links da topbar",
+    "data/v1/*/_index.yml": "Versão base de cada página",
+    "data/v2/*/_index.yml": "Atualizações da versão 2",
+    "server/utils/versionManager.ts": "Resolve arquivos entre versões",
+    "server/utils/cacheManager.ts": "Gerencia cache em memória",
+    "composables/useVersionedData.ts": "Interface Vue para dados versionados"
+  }
+}

@@ -9,7 +9,8 @@ const props = defineProps({
   },
   contentWidth: {
     type: String,
-    default: 'cw-1'
+    // 🧹 FAXINA: Agora usamos os nomes do nosso AppContainer: 'site', 'content' ou 'full'
+    default: 'content' 
   },
   class: {
     type: String,
@@ -17,23 +18,11 @@ const props = defineProps({
   }
 });
 
-// ==========================================
-// ✨ TRUQUE JIT: LARGURAS RESPONSIVAS ✨
-// ==========================================
-const safelistWidths = {
-  'cw-0': 'cw-0',
-  'cw-1': 'cw-0 md:cw-1',
-  'cw-2': 'cw-0 md:cw-2',
-  'cw-3': 'cw-0 md:cw-3',
-  'full': 'w-full'
-};
-
-// Lógica de bordas: Full-bleed no mobile, arredondado no desktop (se não for cw-0 ou full)
+// Lógica de bordas: Full-bleed no mobile, arredondado global no desktop
+// 🧹 FAXINA: Usando a variável --radius-cartao do main.css
 const borderLogic = computed(() => {
-  if (props.contentWidth === 'cw-0' || props.contentWidth === 'full') {
-    return 'rounded-none 2xl:rounded-2xl'; 
-  }
-  return 'rounded-none md:rounded-2xl';    
+  if (props.contentWidth === 'full') return 'rounded-none';
+  return 'rounded-none md:rounded-cartao';    
 });
 
 const mainImage = computed(() => props.images[0]);
@@ -90,7 +79,6 @@ const stopSlideshow = () => {
   if (slideshowInterval) clearInterval(slideshowInterval);
 };
 
-// Navegação por teclado
 const handleKeydown = (e) => {
   if (!isLightboxOpen.value) return;
   if (e.key === 'Escape') closeLightbox();
@@ -106,34 +94,34 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :class="['w-full', safelistWidths[contentWidth] || safelistWidths['cw-1'], props.class]">
+  <AppContainer :size="contentWidth" :class="['w-full', props.class]">
     
     <div 
       :class="[
-        'flex flex-col md:flex-row gap-2 md:h-[60vh] overflow-hidden',
+        'flex flex-col md:flex-row gap-2 md:h-[65vh] overflow-hidden transition-all duration-500',
         borderLogic
       ]"
     >
-      
       <div 
-        class="w-full md:w-1/2 h-[40vh] md:h-full relative overflow-hidden group cursor-pointer"
+        class="w-full md:w-1/2 h-[45vh] md:h-full relative overflow-hidden group cursor-pointer"
         @click="openLightbox(0)"
       >
         <img 
           v-if="mainImage"
           :src="resolveImage(mainImage)" 
           alt="Main Banner" 
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
         />
-        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300"></div>
-        <div class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md text-white text-sm px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+        <div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300"></div>
+        
+        <div class="absolute bottom-6 left-6 bg-black/50 backdrop-blur-xl text-white text-xs font-bold uppercase tracking-widest px-5 py-3 rounded-full opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-2xl">
           <i class="pi pi-search-plus mr-2"></i> Ver Galeria
         </div>
       </div>
 
       <div 
         v-if="gridImages.length" 
-        class="w-full md:w-1/2 grid grid-cols-2 grid-rows-2 gap-2 h-[40vh] md:h-full"
+        class="w-full md:w-1/2 grid grid-cols-2 grid-rows-2 gap-2 h-[45vh] md:h-full"
       >
         <div 
           v-for="(img, index) in gridImages" 
@@ -144,13 +132,13 @@ onUnmounted(() => {
           <img 
             :src="resolveImage(img)" 
             :alt="`Gallery Image ${index + 1}`" 
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           />
-          <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300"></div>
           
           <div 
             v-if="index === 3 && images.length > 5" 
-            class="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-2xl font-bold transition-colors group-hover:bg-black/50"
+            class="absolute inset-0 bg-primary/80 backdrop-blur-sm flex items-center justify-center text-white text-3xl font-black transition-all group-hover:bg-primary"
           >
             +{{ images.length - 5 }}
           </div>
@@ -162,26 +150,24 @@ onUnmounted(() => {
       <Transition name="fade">
         <div 
           v-if="isLightboxOpen" 
-          class="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-xl flex items-center justify-center"
+          class="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-2xl flex items-center justify-center"
         >
           
           <div class="absolute top-0 left-0 w-full p-6 flex items-center justify-between z-50">
-            <div class="text-white/60 font-medium tracking-widest text-sm bg-black/40 px-4 py-1.5 rounded-full">
+            <div class="text-white/80 font-black tracking-widest text-xs bg-white/10 backdrop-blur-md px-5 py-2 rounded-full border border-white/10">
               {{ currentIndex + 1 }} / {{ images.length }}
             </div>
             
             <div class="flex items-center gap-4">
               <button 
                 @click="toggleSlideshow" 
-                class="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
-                :title="isPlaying ? 'Pausar Slideshow' : 'Iniciar Slideshow'"
+                class="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-primary text-white rounded-full transition-all active:scale-90"
               >
                 <i :class="['pi text-xl', isPlaying ? 'pi-pause' : 'pi-play']"></i>
               </button>
               <button 
                 @click="closeLightbox" 
-                class="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-red-500/80 text-white rounded-full transition-colors"
-                title="Fechar (Esc)"
+                class="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-red-500 text-white rounded-full transition-all active:scale-90"
               >
                 <i class="pi pi-times text-xl"></i>
               </button>
@@ -190,7 +176,7 @@ onUnmounted(() => {
 
           <button 
             @click.stop="stopSlideshow(); prevImage()" 
-            class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/30 text-white rounded-full transition-all hover:-translate-x-1 z-50"
+            class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-14 h-14 flex items-center justify-center bg-white/5 hover:bg-white/20 text-white rounded-full transition-all hover:-translate-x-1 z-50 border border-white/10"
           >
             <i class="pi pi-chevron-left text-2xl"></i>
           </button>
@@ -201,14 +187,14 @@ onUnmounted(() => {
           >
             <img 
               :src="resolveImage(images[currentIndex])" 
-              class="max-w-full max-h-full object-contain drop-shadow-2xl select-none"
+              class="max-w-full max-h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] select-none animate-in zoom-in-95 duration-300"
               alt="Zoomed Gallery Image"
             />
           </div>
 
           <button 
             @click.stop="stopSlideshow(); nextImage()" 
-            class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/30 text-white rounded-full transition-all hover:translate-x-1 z-50"
+            class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-14 h-14 flex items-center justify-center bg-white/5 hover:bg-white/20 text-white rounded-full transition-all hover:translate-x-1 z-50 border border-white/10"
           >
             <i class="pi pi-chevron-right text-2xl"></i>
           </button>
@@ -216,14 +202,13 @@ onUnmounted(() => {
         </div>
       </Transition>
     </Teleport>
-  </div>
+  </AppContainer>
 </template>
 
 <style scoped>
-/* Animação suave para abrir/fechar o Lightbox */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .fade-enter-from,
 .fade-leave-to {

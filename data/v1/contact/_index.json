@@ -1,18 +1,8 @@
 {
   "layout": "default",
+  "title": "Contacta a Sirius Studio",
+  "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop",
   "blocks": [
-    {
-      "id": "header-contact",
-      "componentName": "PageHeader",
-      "isHero": false,
-      "props": {
-        "tag": "Só chamar",
-        "tagIcon": "pi pi-envelope",
-        "title": "Fale ",
-        "highlight": "Conosco",
-        "subtitle": "Tens um projeto em mente ou uma dúvida técnica? Preenche o formulário abaixo."
-      }
-    },
     {
       "id": "contact-form-section",
       "componentName": "SiriusContactModel1",

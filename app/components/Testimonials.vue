@@ -1,5 +1,5 @@
 <template>
-  <section class="py-16 md:py-14 flex flex-col gap-16 md:gap-12">
+  <section class="py-16 md:py-14 flex flex-col gap-16 md:gap-12 transition-colors duration-500">
     
     <PageHeader
       tag="O que dizem sobre nós"
@@ -11,51 +11,49 @@
 
     <div :class="['flex flex-col gap-12 mx-auto', contentWidth]">
       
-      <!-- ✨ Grelha de Testemunhos ✨ -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
-        <!-- Cartão Adaptável ao Dark Mode -->
         <div 
           v-for="(review, index) in displayReviews" 
           :key="index" 
-          class="flex flex-col h-full relative z-0 overflow-hidden group p-6 md:p-8 rounded-[var(--theme-radius-card,1rem)] border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:!border-[var(--theme-brand)]"
-          :style="{ 
-            backgroundColor: 'color-mix(in srgb, var(--theme-text) 2%, transparent)', 
-            borderColor: 'color-mix(in srgb, var(--theme-text) 8%, transparent)' 
-          }"
+          class="flex flex-col h-full relative z-0 overflow-hidden group p-6 md:p-8 rounded-cartao border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl bg-bg-muted border-border"
         >
+          <div class="absolute inset-0 rounded-cartao border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10 border-primary"></div>
           
-          <!-- Ícone de aspas decorativo (Fica gigante e semi-transparente no fundo) -->
-          <i class="pi pi-quote-right absolute -bottom-4 -right-4 text-9xl opacity-[0.03] group-hover:opacity-[0.06] group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 z-[-1] text-[var(--theme-brand)] pointer-events-none"></i>
+          <i class="pi pi-quote-right absolute -bottom-4 -right-4 text-9xl opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 z-[-1] pointer-events-none text-primary"></i>
           
-          <!-- Avaliação (Estrelas) -->
-          <div class="flex gap-1 text-amber-400 mb-6">
+          <div class="flex gap-1 text-amber-400 mb-6 relative z-20">
             <i v-for="star in review.rating || 5" :key="star" class="pi pi-star-fill text-sm drop-shadow-sm"></i>
           </div>
           
-          <!-- Texto do Testemunho -->
-          <p class="text-base md:text-lg italic opacity-90 mb-8 flex-1 leading-relaxed transition-colors duration-300">
+          <p class="text-base md:text-lg italic opacity-90 mb-8 flex-1 leading-relaxed transition-colors duration-500 relative z-20 font-sans text-text-main">
             "{{ review.text }}"
           </p>
           
-          <!-- Perfil do Cliente (Rodapé do cartão) -->
-          <!-- Borda superior também atualizada com color-mix para adaptar ao Dark Mode -->
-          <div 
-            class="flex items-center gap-4 mt-auto pt-6 border-t transition-colors duration-300"
-            :style="{ borderColor: 'color-mix(in srgb, var(--theme-text) 8%, transparent)' }"
-          >
+          <div class="flex items-center gap-4 mt-auto pt-6 border-t transition-colors duration-500 relative z-20 border-border">
+            
             <div class="relative">
-              <img :src="review.avatar" :alt="review.name" class="w-12 h-12 rounded-full object-cover border-2 border-transparent group-hover:border-[var(--theme-brand)] transition-colors duration-300 shadow-sm" />
-              <!-- Pequeno ícone de verificação (Trust badge) -->
-              <div class="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full w-4 h-4 flex items-center justify-center border-2 border-white">
+              <img 
+                :src="review.avatar" 
+                :alt="review.name" 
+                class="w-12 h-12 rounded-full object-cover transition-all duration-300 shadow-sm border-2 border-transparent"
+              />
+              <div class="absolute inset-0 rounded-full border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border-primary"></div>
+
+              <div class="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full w-4 h-4 flex items-center justify-center border-2 transition-colors duration-500 border-bg-base">
                 <i class="pi pi-check text-[8px] font-bold"></i>
               </div>
             </div>
             
             <div class="flex flex-col">
-              <span class="font-bold text-sm transition-colors duration-300" :style="{ color: 'var(--theme-heading-text, var(--theme-text))' }">{{ review.name }}</span>
-              <span class="text-xs opacity-60 font-medium transition-colors duration-300">{{ review.role }}</span>
+              <span class="font-bold text-sm transition-colors duration-500 text-primary font-sans">
+                {{ review.name }}
+              </span>
+              <span class="text-xs font-medium transition-colors duration-500 text-text-muted">
+                {{ review.role }}
+              </span>
             </div>
+
           </div>
 
         </div>
@@ -79,7 +77,8 @@ const props = defineProps({
   },
   contentWidth: {
     type: String,
-    default: 'cw-1'
+    // 🧹 FAXINA: O cw-1 passa oficialmente a w-full, permitindo ao AppContainer comandar a largura.
+    default: 'w-full' 
   },
   reviews: {
     type: Array,
@@ -87,9 +86,29 @@ const props = defineProps({
   }
 });
 
-// 🚀 DADOS DE EXEMPLO (Placeholder Premium)
-// Renderizados automaticamente se não passares a prop 'reviews'
-
+const fallbackReviews = [
+  {
+    rating: 5,
+    text: "A transformação foi incrível. Em apenas 3 meses duplicámos a nossa taxa de conversão online.",
+    name: "Ana Silva",
+    role: "CMO, TechNova",
+    avatar: "https://i.pravatar.cc/150?img=47"
+  },
+  {
+    rating: 5,
+    text: "O nível de detalhe e profissionalismo desta equipa é algo que raramente se encontra no mercado atual.",
+    name: "Ricardo Mendes",
+    role: "Fundador, StartUp UX",
+    avatar: "https://i.pravatar.cc/150?img=11"
+  },
+  {
+    rating: 5,
+    text: "Não entregaram apenas um site, entregaram uma máquina de vendas perfeitamente oleada e esteticamente perfeita.",
+    name: "Sofia Costa",
+    role: "Diretora Criativa, Estúdio B",
+    avatar: "https://i.pravatar.cc/150?img=5"
+  }
+];
 
 const displayReviews = computed(() => {
   return props.reviews && props.reviews.length > 0 ? props.reviews : fallbackReviews;

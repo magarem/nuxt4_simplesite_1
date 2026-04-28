@@ -1,0 +1,10 @@
+layout: default
+title: Consultoria top!
+image: https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1200&h=300&auto=format&fit=crop
+blocks:
+- id: main-content
+  componentName: ContentMD
+  isHero: false
+  props:
+    fileName: textbox1.md
+    contentWidth: cw-1
