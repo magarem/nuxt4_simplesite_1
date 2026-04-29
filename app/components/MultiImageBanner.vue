@@ -7,7 +7,7 @@ const props = defineProps({
     required: true,
     validator: (value) => value.length > 0
   },
-  contentWidth: {
+  cWidth: {
     type: String,
     // 🧹 FAXINA: Agora usamos os nomes do nosso AppContainer: 'site', 'content' ou 'full'
     default: 'content' 
@@ -21,7 +21,7 @@ const props = defineProps({
 // Lógica de bordas: Full-bleed no mobile, arredondado global no desktop
 // 🧹 FAXINA: Usando a variável --radius-cartao do main.css
 const borderLogic = computed(() => {
-  if (props.contentWidth === 'full') return 'rounded-none';
+  if (props.cWidth === 'full') return 'rounded-none';
   return 'rounded-none md:rounded-cartao';    
 });
 
@@ -94,7 +94,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <AppContainer :size="contentWidth" :class="['w-full', props.class]">
+  <AppContainer :size="cWidth" :class="['w-full', props.class]">
     
     <div 
       :class="[

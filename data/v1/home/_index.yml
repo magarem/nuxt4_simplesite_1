@@ -8,7 +8,7 @@ blocks:
         titlePrefix: O Futuro
         titleHighlight: começa agora
         subtitle: O poder da tecnologia a seu serviço
-        contentWidth: cw-1
+        cWidth: cw-1
         slides:
           - /homevideo.mp4
         slideDuration: 5000

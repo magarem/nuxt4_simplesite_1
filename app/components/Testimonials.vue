@@ -9,7 +9,7 @@
       :subtitle="subtitle"
     />
 
-    <div :class="['flex flex-col gap-12 mx-auto', contentWidth]">
+    <div :class="['flex flex-col gap-12 mx-auto', cWidth]">
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
@@ -75,7 +75,7 @@ const props = defineProps({
     type: String,
     default: 'Descobre como ajudámos marcas ambiciosas a escalar e a transformar a sua presença digital de forma impactante.'
   },
-  contentWidth: {
+  cWidth: {
     type: String,
     // 🧹 FAXINA: O cw-1 passa oficialmente a w-full, permitindo ao AppContainer comandar a largura.
     default: 'w-full' 

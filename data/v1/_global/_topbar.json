@@ -3,7 +3,7 @@
   "height": "80px",
   "backgroundColor": "#ffffff",
   "textColor": "#1a1a1a",
-  "innerContentWidth": "cw-1",
+  "innercWidth": "cw-1",
   "blocks": [
     {
       "id": "logo-block",

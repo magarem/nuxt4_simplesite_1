@@ -10,7 +10,7 @@ const props = defineProps({
   pagePath: String,
   fileName: String,
   // 🧹 FAXINA: Atualizado de 'cw-1' para 'w-full', deixando a responsabilidade da largura máxima para o AppContainer pai
-  contentWidth: { type: String, default: "w-full" },
+  cWidth: { type: String, default: "w-full" },
   layout: {
     type: Object,
     default: () => ({

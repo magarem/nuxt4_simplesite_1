@@ -33,7 +33,7 @@
 
     <AppContainer 
       class="relative z-20 text-center text-white flex flex-col items-center gap-6 px-4 mt-10" 
-      :size="heroData.contentWidth"
+      :size="heroData.cWidth"
     >
       
       <span v-if="heroData.tag" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white/20 text-white border border-white/30 backdrop-blur-sm">
@@ -77,7 +77,7 @@ const heroData = computed(() => ({
   titlePrefix: 'O Futuro do',
   titleHighlight: 'Web Design',
   subtitle: 'Faz scroll para baixo e descobre o nosso universo através das páginas principais.',
-  contentWidth: 'content', // 🧹 FAXINA: O antigo 'cw-1' deu lugar a 'content' ou 'site'
+  cWidth: 'content', // 🧹 FAXINA: O antigo 'cw-1' deu lugar a 'content' ou 'site'
   slides: [
     "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000&auto=format&fit=crop",
     "/fundo.mp4", 

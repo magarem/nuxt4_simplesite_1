@@ -16,7 +16,7 @@
       "componentName": "CardGrid",
       "isHero": false,
       "props": {
-        "contentWidth": "cw-1",
+        "cWidth": "cw-1",
         "items": [
           {
             "title": "Arquitetura de Marcas",

@@ -1,5 +1,5 @@
 <template>
-  <section v-if="title" :class="['flex flex-col relative pt-4 pb-0 md:pt-0 transition-colors duration-500', alignmentClass, contentWidth]">  
+  <section v-if="title" :class="['flex flex-col relative pt-4 pb-0 md:pt-0 transition-colors duration-500', alignmentClass, cWidth]">  
     
     <div 
       v-if="tag" 
@@ -60,7 +60,7 @@ const props = defineProps({
     type: String, 
     default: '' 
   },
-  contentWidth: { 
+  cWidth: { 
     type: String, 
     default: 'content' 
   },

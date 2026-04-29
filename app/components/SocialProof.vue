@@ -2,7 +2,7 @@
   <section 
     class="w-full py-12 md:py-10 border-y border-border bg-bg-muted/50 overflow-hidden transition-colors duration-500"
   >
-    <div :class="['flex flex-col items-center gap-8 mx-auto', contentWidth]">
+    <div :class="['flex flex-col items-center gap-8 mx-auto', cWidth]">
       
       <h3 
         v-if="title" 
@@ -63,7 +63,7 @@ const props = defineProps({
     type: String,
     default: 'Empresas que confiam em nós'
   },
-  contentWidth: {
+  cWidth: {
     type: String,
     // 🧹 FAXINA: De 'cw-1' para 'w-full' (porque este bloco já é injetado dentro do AppContainer, se for no miolo)
     default: 'w-full' 

@@ -1,5 +1,5 @@
 <template>
-  <section :class="['w-full', contentWidth]">
+  <section :class="['w-full', cWidth]">
     <div 
       class="bg-[var(--theme-brand)] p-10 md:p-16 text-center text-white flex flex-col items-center gap-8 shadow-xl relative overflow-hidden" 
       :style="{ borderRadius: 'var(--theme-radius-card, 1.5rem)' }"
@@ -49,7 +49,7 @@ defineProps({
     type: String,
     default: '/contactos'
   },
-  contentWidth: {
+  cWidth: {
     type: String,
     default: 'cw-1'
   }

@@ -8,7 +8,7 @@
       <div class="absolute -bottom-[30%] -left-[10%] w-[60%] h-[80%] rounded-full blur-[140px] transition-colors duration-500 bg-primary"></div>
     </div>
 
-    <div :class="['relative z-10 flex flex-col items-center text-center px-4 mx-auto', ctaConfig.contentWidth]">
+    <div :class="['relative z-10 flex flex-col items-center text-center px-4 mx-auto', ctaConfig.cWidth]">
       
       <h2 class="text-4xl md:text-6xl lg:text-7xl font-serif font-black tracking-tighter mb-6 drop-shadow-lg leading-[1.1] max-w-[15ch] transition-colors duration-500 text-bg-base">
         {{ ctaConfig.title }}
@@ -52,7 +52,7 @@ const ctaConfig = computed(() => ({
   buttonText: 'Iniciar Projeto',
   buttonLink: '/contact',
   // 🧹 FAXINA: Alterado de 'cw-1' para 'w-full' para fluir com o AppContainer da página!
-  contentWidth: 'w-full',
+  cWidth: 'w-full',
   ...props.config 
 }));
 </script>

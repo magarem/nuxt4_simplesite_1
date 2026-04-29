@@ -19,7 +19,7 @@
       "isHero": false,
       "props": {
         "fileName": "history.md",
-        "contentWidth": "cw-1"
+        "cWidth": "cw-1"
       }
     }
   ]

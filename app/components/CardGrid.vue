@@ -1,5 +1,5 @@
 <template>
-  <div :class="['w-full mx-auto', contentWidth]">
+  <div :class="['w-full mx-auto', cWidth]">
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <UiCard
         v-for="(item, index) in items"
@@ -121,7 +121,7 @@ const props = defineProps({
     required: true,
     default: () => [],
   },
-  contentWidth: {
+  cWidth: {
     type: String,
     default: 'cw-1' // Fallback de segurança para o tamanho padrão
   }

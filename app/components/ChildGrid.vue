@@ -6,7 +6,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  contentWidth: {
+  cWidth: {
     type: String,
     // 🧹 FAXINA: Substituímos 'cw-1' por 'w-full' para deixar o AppContainer fluir
     default: 'w-full' 
@@ -25,7 +25,7 @@ const filteredChildren = computed(() => {
 </script>
 
 <template>
-  <section class="sirius-grid-section w-full transition-colors duration-500 mb-20" :class="contentWidth">
+  <section class="sirius-grid-section w-full transition-colors duration-500 mb-20" :class="cWidth">
     
     <div v-if="pending" class="sirius-grid-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="i in 3" :key="i" class="sirius-loading-card animate-pulse bg-bg-muted rounded-cartao h-72 border border-border"></div>

@@ -1,5 +1,5 @@
 <template>
-  <section :class="['py-0 transition-colors duration-500', contentWidth]">
+  <section :class="['py-0 transition-colors duration-500', cWidth]">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       
       <div
@@ -39,7 +39,7 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  contentWidth: {
+  cWidth: {
     type: String,
     // 🧹 FAXINA: Atualizado de 'cw-1' para 'w-full' para respeitar o AppContainer pai
     default: 'w-full'

@@ -7,4 +7,4 @@ blocks:
   isHero: false
   props:
     parentPath: services
-    contentWidth: cw-1
+    cWidth: cw-1

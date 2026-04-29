@@ -49,7 +49,7 @@ const props = defineProps({
    * Largura do contentor (cw-0, cw-1, cw-2, cw-3)
    * Agora consome diretamente o que está no main.css
    */
-  contentWidth: {
+  cWidth: {
     type: String,
     default: 'cw-1'
   },
@@ -95,10 +95,10 @@ const resolveImg = (path) => {
 <template>
   <!-- 
     ✨ O segredo: a classe 'content-component' não define larguras. 
-    Ela deixa a classe 'contentWidth' (vinda da prop e definida no main.css) 
+    Ela deixa a classe 'cWidth' (vinda da prop e definida no main.css) 
     comandar o max-width e o margin-inline: auto.
   -->
-  <div :class="['content-component', contentWidth, { 'is-loading': pending }]">
+  <div :class="['content-component', cWidth, { 'is-loading': pending }]">
     
   
     <!-- 2. BANNER PRINCIPAL (TOP IMAGE) -->

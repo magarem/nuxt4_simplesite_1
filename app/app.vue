@@ -8,7 +8,7 @@ const previewCookie = useCookie('preview_layer');
 const clearPreview = () => {
   previewCookie.value = null;
   // Recarrega a página limpando a cache
-  window.location.href = '/'; 
+  window.location.href = '/';
 };
 </script>
 
